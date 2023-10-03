@@ -1,12 +1,10 @@
-import os
 import json
 from googleapiclient.discovery import build
-
-env_var=os.environ
-env_var['YT_API_KEY'] = 'AIzaSyABL6-p6geWeiWBdAScLTLYEmxSyWLjtZk'
+from src.config import get_api_key
 
 class Channel:
     """Класс для ютуб-канала"""
+    api_key = get_api_key()
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
@@ -18,14 +16,13 @@ class Channel:
         self.video_count = None
         self.view_count = None
 
-        api_key: str = os.getenv('YT_API_KEY')
-        youtube = self.get_service(api_key)
-        request = youtube.channels().list(
-            part="snippet,contentDetails,statistics",
-            id=self.channel_id
-        )
 
-        response = request.execute()
+        self.request = self.get_service().channels().list(
+            part="snippet,contentDetails,statistics",
+            id="UC_x5XG1OV2P6uZZ5FSM9Ttw"
+        )
+        response = self.request.execute()
+
         if response['items']:
             channel_data = response['items'][0]
             self.title = channel_data['snippet']['title']
@@ -47,9 +44,10 @@ class Channel:
         print(f"Общее количество просмотров: {self.view_count}")
 
     @classmethod
-    def get_service(cls, api_key: str):
+    def get_service(cls):
         """Возвращает объект для работы с YouTube API."""
-        return build('youtube', 'v3', developerKey=api_key)
+        youtube = build('youtube', 'v3', developerKey=cls.api_key)
+        return youtube
 
     def to_json(self, filename: str) -> None:
         """Сохраняет в файл значения атрибутов экземпляра Channel в формате JSON."""

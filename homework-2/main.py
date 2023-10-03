@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     # можем получить объект для работы с API вне класса
     api_key = os.environ.get('YT_API_KEY')
-    print(Channel.get_service(api_key))
+    print(Channel.get_service())
     # <googleapiclient.discovery.Resource object at 0x000002B1E54F9750>
 
     # создаем файл 'moscowpython.json' в данными по каналу
