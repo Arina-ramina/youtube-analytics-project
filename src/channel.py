@@ -16,11 +16,11 @@ class Channel:
         self.video_count = None
         self.view_count = None
 
-
         self.request = self.get_service().channels().list(
             part="snippet,contentDetails,statistics",
-            id="UC_x5XG1OV2P6uZZ5FSM9Ttw"
+            id=self.channel_id
         )
+
         response = self.request.execute()
 
         if response['items']:
@@ -31,6 +31,44 @@ class Channel:
             self.subscribers = int(channel_data['statistics']['subscriberCount'])
             self.video_count = int(channel_data['statistics']['videoCount'])
             self.view_count = int(channel_data['statistics']['viewCount'])
+
+
+    def __str__(self):
+        '''возвращает название и ссылку на канал'''
+        return f"{self.title} ({self.url})"
+
+
+    def __add__(self, other):
+        '''складывание двух каналов между собой по количеству подписчиков'''
+        return self.subscribers+other.subscribers
+
+    def __sub__(self, other):
+        '''вычитание двух каналов между собой по количеству подписчиков'''
+        return self.subscribers - other.subscribers
+
+
+    def __gt__(self, other):
+        '''сравнение «больше» > двух каналов между собой по количеству подписчиков'''
+        return self.subscribers > other.subscribers
+
+
+    def __ge__(self, other):
+        '''сравнение «больше или равно» >= двух каналов между собой по количеству подписчиков '''
+        return self.subscribers >= other.subscribers
+
+
+    def __lt__(self, other):
+        '''сравнение «меньше» < двух каналов между собой по количеству подписчиков '''
+        return self.subscribers < other.subscribers
+
+    def __le__(self, other):
+        '''сравнение «меньше или равно»  <= двух каналов между собой по количеству подписчиков '''
+        return self.subscribers <= other.subscribers
+
+    def __eq__(self, other):
+        '''сравнение  "равенство" == двух каналов между собой по количеству подписчиков '''
+        return self.subscribers == other.subscribers
+
 
 
     def print_info(self) -> None:
