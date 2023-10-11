@@ -2,13 +2,14 @@ import json
 from googleapiclient.discovery import build
 from src.config import get_api_key
 
+
 class Channel:
     """Класс для ютуб-канала"""
     api_key = get_api_key()
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
-        self.channel_id=channel_id
+        self.channel_id = channel_id
         self.title = None
         self.description = None
         self.url = None
@@ -32,44 +33,37 @@ class Channel:
             self.video_count = int(channel_data['statistics']['videoCount'])
             self.view_count = int(channel_data['statistics']['viewCount'])
 
-
     def __str__(self):
-        '''возвращает название и ссылку на канал'''
+        """возвращает название и ссылку на канал"""
         return f"{self.title} ({self.url})"
 
-
     def __add__(self, other):
-        '''складывание двух каналов между собой по количеству подписчиков'''
-        return self.subscribers+other.subscribers
+        """складывание двух каналов между собой по количеству подписчиков"""
+        return self.subscribers + other.subscribers
 
     def __sub__(self, other):
-        '''вычитание двух каналов между собой по количеству подписчиков'''
+        """вычитание двух каналов между собой по количеству подписчиков"""
         return self.subscribers - other.subscribers
 
-
     def __gt__(self, other):
-        '''сравнение «больше» > двух каналов между собой по количеству подписчиков'''
+        """сравнение «больше» > двух каналов между собой по количеству подписчиков"""
         return self.subscribers > other.subscribers
 
-
     def __ge__(self, other):
-        '''сравнение «больше или равно» >= двух каналов между собой по количеству подписчиков '''
+        """сравнение «больше или равно» >= двух каналов между собой по количеству подписчиков"""
         return self.subscribers >= other.subscribers
 
-
     def __lt__(self, other):
-        '''сравнение «меньше» < двух каналов между собой по количеству подписчиков '''
+        """сравнение «меньше» < двух каналов между собой по количеству подписчиков"""
         return self.subscribers < other.subscribers
 
     def __le__(self, other):
-        '''сравнение «меньше или равно»  <= двух каналов между собой по количеству подписчиков '''
+        """сравнение «меньше или равно»  <= двух каналов между собой по количеству подписчиков"""
         return self.subscribers <= other.subscribers
 
     def __eq__(self, other):
-        '''сравнение  "равенство" == двух каналов между собой по количеству подписчиков '''
+        """сравнение  "равенство" == двух каналов между собой по количеству подписчиков"""
         return self.subscribers == other.subscribers
-
-
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
