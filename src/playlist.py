@@ -51,6 +51,6 @@ class PlayList(PLVideo):
 
     def show_best_video(self):
         best_video = max(self.videos, key=lambda video: video.like_video)
-        return best_video.url
+        return f"https://youtu.be/{best_video.id_video}"
 
 
