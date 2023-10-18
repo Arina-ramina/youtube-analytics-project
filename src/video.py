@@ -15,13 +15,11 @@ class Video:
         self.view_video = None
         self.like_video = None
 
-
         try:
             self.request = self.get_service().videos().list(
                 part="snippet,statistics",
                 id=self.id_video
             )
-
             response = self.request.execute()
 
             if response['items']:
@@ -31,8 +29,10 @@ class Video:
                 self.view_video = int(video_data['statistics']['viewCount'])
                 self.like_video = int(video_data['statistics']['likeCount'])
         except HttpError as e:
-            # В случае ошибки при запросе API, устанавливаем атрибуты в None
+            self.name_video = self.url_video = self.view_video = self.like_video = None
             print(f"Ошибка при получении данных для видео {self.id_video}: {e}")
+
+
 
     def get_service(self):
         return build("youtube", "v3", developerKey=self.api_key)
